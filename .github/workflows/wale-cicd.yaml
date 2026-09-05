@@ -8,6 +8,6 @@ jobs:
      steps:
        -uses: actions/checkout@v4
        -name: say hello
-        run: echo "hello from Wale"
+       -run: echo "hello from Wale"
  
  
