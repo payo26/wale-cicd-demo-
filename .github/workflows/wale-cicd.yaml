@@ -16,7 +16,7 @@ jobs:
         uses: azure/login@v2
         with:
           auth-type: SERVICE_PRINCIPAL        
-          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+          client-id: ${{ secrets.SUBSCRIPTION_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
 
       - uses: actions/checkout@v3
