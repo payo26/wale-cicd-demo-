@@ -1,13 +1,76 @@
+name: maydoy vm deploy
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
-   build:
+   provision:
      runs-on: ubuntu-latest
+     environment: maydoy_production
+     outputs:
+       vm_ip: ${{ steps.tf_output.outputs.vm_ip }}
+
      steps:
-        - uses: actions/checkout@v4
-        - name: say hello
-          run: echo "hello from Wale"
- 
+       - uses: azure/login@v3
+         with:
+           creds: ${{ secrets.WALE_SECRETS_TERRAFORM }}
+       - uses: actions/checkout@v3
+       
+       - uses: azure/login@v1
+         with:
+           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+       - uses: hashicorp/setup-terraform@v2
+
+       - name: prepare SSH PUBLIC key
+         run: |
+           mkdir -p ~/.ssh
+           echo "${{ secrets.SSH_PUBLIC_KEY }}" > ~/.ssh/id_rsa.pub
+           chmod 600 ~/.ssh/id_rsa.pub
+
+           - name: Terraform Init
+             run: terraform init 
+
+                 - name: Terraform Plan
+                   run: |
+                   terraform plan 
+                  - var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" 
+                  - output="maydoy.tfplan" 
+
+                  - name: Terraform Apply
+                    run: terraform apply -auto-approve maydoy.tfplan
+
+                    - name: Terraform Output
+                      id: tf_output
+                      run: |
+                        echo "vm_ip=$(terraform output -raw vm_ip)" >> $GITHUB_OUTPUT 
+
+                        configure:
+                           needs: provision
+                           runs-on: ubuntu-latest
+                           steps:
+                              - name: prepare SSH PRIVATE key
+                                run: |
+                                  mkdir -p ~/.ssh
+                                  echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+                                  chmod 600 ~/.ssh/id_rsa
+
+                              - name: wait for VM to be ready
+                                run: |
+                                  for i in $ (sequence 1 10); do                          
+
+                                 ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa azureuser@${{ needs.provision.outputs.vm_ip }} << 'EOF'
+                                  sudo apt update
+                                  sudo apt install -y nginx
+                                  EOF                                
+                                
+                                
+                    
+
+
+                
+  
+  
+
  
