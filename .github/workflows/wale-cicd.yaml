@@ -13,13 +13,14 @@ jobs:
 
     steps:
       - name: Azure Login
-        uses: azure/login@v2
+      - uses: actions/checkout@v3
+        
         with:
           creds: ${{ secrets.WALE_AZURE_CREDENTIALS }}
 
-      - uses: actions/checkout@v3
+      - uses: azure/login@v2
 
-      - uses: hashicorp/setup-terraform@v2
+      - uses: hashicorp/setup-terraform@v3
 
       - name: Prepare SSH public key
         run: |
