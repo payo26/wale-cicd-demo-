@@ -16,7 +16,7 @@ jobs:
         uses: azure/login@v2
         with:
           creds: ${{ secrets.WALE_AZURE_CREDENTIALS }}
-                 ${{ secrets.SUBSCRIPTION _ID }}
+                 ${{ secrets.SUBSCRIPTION _CREDENTIAL }}
       
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v3
