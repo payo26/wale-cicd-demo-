@@ -15,7 +15,8 @@ jobs:
       - name: Azure Login
         uses: azure/login@v2
         with:
-          creds: ${{ secrets.WALE_AZURE_CREDENTIALS }}                 
+          creds: ${{ secrets.WALE_AZURE_CREDENTIALS }}
+                 ${{ secrets.SUBSCRIPTION _ID }}
       
       - uses: actions/checkout@v3
       
