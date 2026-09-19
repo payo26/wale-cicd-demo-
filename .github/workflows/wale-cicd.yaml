@@ -1,4 +1,4 @@
-name: maydoy vm deploy
+name: Maydoy Vm Deploy
 on:
   push:
     branches: [main]
