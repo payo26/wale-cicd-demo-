@@ -23,10 +23,8 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           client-secret: ${{ secrets.AZURE_CLIENT_SECTRET }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.WALE_SUBSCRIPTION_ID }}
-      
-      - uses: actions/checkout@v3
-      
+          subscription-id: ${{ secrets.WALE_SUBSCRIPTION_ID }}    
+          
       - uses: hashicorp/setup-terraform@v3
 
       - name: Prepare SSH public key
