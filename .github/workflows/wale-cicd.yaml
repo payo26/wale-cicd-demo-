@@ -12,7 +12,7 @@ jobs:
       vm_ip: ${{ steps.tf_output.outputs.vm_ip }}
 
     permissions:
-      id-token: none
+      id-token: write
       contents: read
 
     steps:
