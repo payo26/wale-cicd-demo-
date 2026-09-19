@@ -11,14 +11,17 @@ jobs:
     outputs:
       vm_ip: ${{ steps.tf_output.outputs.vm_ip }}
 
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
       - name: Azure Login
         uses: azure/login@v2
-        with:    
-              client-id: ${{ secrets.AZURE_CLIENT_ID }}
-              tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-              subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}${{ secrets.WALE_AZURE_CREDENTIALS }}
-              subscription_id: ${{ secrets.WALE_SUBSCRIPTION_ID }}"        
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.WALE_SUBSCRIPTION_ID }}
       
       - uses: actions/checkout@v3
       
