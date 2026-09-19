@@ -7,12 +7,13 @@ on:
 jobs:
   provision:
     runs-on: ubuntu-latest
-    environment: maydoy_production
+    environment: maydoy_production    
+    outputs:
+      vm_ip: ${{ steps.tf_output.outputs.vm_ip }}
+
     permissions:
       id-token: write
       contents: read
-    outputs:
-      vm_ip: ${{ steps.tf_output.outputs.vm_ip }}
 
 
     
