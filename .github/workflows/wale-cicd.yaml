@@ -7,7 +7,7 @@ on:
 jobs:
   provision:
     runs-on: ubuntu-latest
-    environment: production    
+    environment: maydoy_production    
     outputs:
       vm_ip: ${{ steps.tf_output.outputs.vm_ip }}
 
