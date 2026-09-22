@@ -135,3 +135,5 @@ resource "azurerm_linux_virtual_machine" "maydoy-vm" {
 output "public_ip_address" {
   value = azurerm_public_ip.maydoy-pip.ip_address
 }
+
+# create 
