@@ -1,27 +1,10 @@
 terraform {
-  required_version = ">= 1.0.0"
-
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "~> 4.57.0"
     }
   }
-
-  backend "azurerm" {
-    resource_group_name  = "terraform-rg"
-    storage_account_name = "wale2026"
-    container_name       = "tfstate"
-    key                  = "terraform.tfstate"
-  }
-}
-
-variable "subscription_id" {
-  type = string
-}
-
-variable "ssh_public_key" {
-  type = string
 }
 
 provider "azurerm" {
@@ -31,11 +14,16 @@ provider "azurerm" {
 
 terraform {
   required_version = ">= 1.0.0"
- backend "azurerm" {
-  resource_group_name  = "maydoy-rg"
-  storage_account_name = "maydoytfstate"
-  access_key             = "maydoytfstate.key"
+  backend "azurerm" {
+    resource_group_name  = "terraformstate-rg"
+    storage_account_name = "wale2026"  
+    access_key           = "tfstate.key"
+  }
 }
+
+variable "ssh_public_key" {
+  description = "SSH public key used to access the Linux virtual machine."
+  type        = string
 }
 
 # Create a resource group
