@@ -15,9 +15,9 @@ provider "azurerm" {
 terraform {
   required_version = ">= 1.0.0"
  backend "azurerm" {
-  resource_group_name  = "maydoy-rg"
-  storage_account_name = "maydoytfstate"
-  access_key             = "maydoytfstate.key"
+  resource_group_name  = "terraformstate-rg"
+  storage_account_name = "tfstate"
+  access_key             = "tfstate.key"
 }
 }
 
