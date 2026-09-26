@@ -16,8 +16,8 @@ terraform {
   required_version = ">= 1.0.0"
   backend "azurerm" {
     resource_group_name  = "terraformstate-rg"
-    storage_account_name = "wale2026"  
-    access_key           = "tfstate.key"
+    storage_account_name = "wale2026"
+    key                  = "tfstate.key"
   }
 }
 
