@@ -1,29 +1,26 @@
 terraform {
+  required_version = ">= 1.0.0"
+
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "~> 4.57.0"
     }
   }
-}
 
-provider "azurerm" {
-  features {}
-  subscription_id = "790aa1f8-6209-43c8-8546-2cbff23d845f"
-}
-
-terraform {
-  required_version = ">= 1.0.0"
   backend "azurerm" {
-    resource_group_name  = "terraformstate-rg"
-    storage_account_name = "wale2026"
+    storage_account_name = "tfstate"
     key                  = "tfstate.key"
   }
 }
 
-variable "ssh_public_key" {
-  description = "SSH public key used to access the Linux virtual machine."
-  type        = string
+variable "subscription_id" {
+  type = string
+}
+
+provider "azurerm" {
+  features {}
+  subscription_id = var.subscription_id
 }
 
 # Create a resource group
@@ -65,7 +62,6 @@ resource "azurerm_network_security_group" "maydoy-nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
-
   security_rule {
     name                       = "AllowHTTP"
     priority                   = 1002
@@ -79,7 +75,7 @@ resource "azurerm_network_security_group" "maydoy-nsg" {
   }
 }
 
-# Create a public IP address
+#create a public IP address
 resource "azurerm_public_ip" "maydoy-pip" {
   name                = "maydoy-pip"
   location            = azurerm_resource_group.maydoy-rg.location
@@ -88,7 +84,7 @@ resource "azurerm_public_ip" "maydoy-pip" {
   sku                 = "Standard"
 }
 
-# Create a network interface
+#create a network interface
 resource "azurerm_network_interface" "maydoy-nic" {
   name                = "maydoy-nic"
   location            = azurerm_resource_group.maydoy-rg.location
@@ -102,20 +98,19 @@ resource "azurerm_network_interface" "maydoy-nic" {
   }
 }
 
-# Associate the network security group with the subnet
+#associate the network security group with the subnet
 resource "azurerm_subnet_network_security_group_association" "maydoy-subnet-nsg-association" {
   subnet_id                 = azurerm_subnet.maydoy-subnet.id
   network_security_group_id = azurerm_network_security_group.maydoy-nsg.id
 }
 
-# Create a virtual machine
+#create a virtual machine
 resource "azurerm_linux_virtual_machine" "maydoy-vm" {
   name                = "maydoy-vm"
   resource_group_name = azurerm_resource_group.maydoy-rg.name
   location            = azurerm_resource_group.maydoy-rg.location
   size                = "Standard_D2s_v3"
   admin_username      = "azureuser"
-
   network_interface_ids = [
     azurerm_network_interface.maydoy-nic.id,
   ]
@@ -134,7 +129,7 @@ resource "azurerm_linux_virtual_machine" "maydoy-vm" {
 
   admin_ssh_key {
     username   = "azureuser"
-    public_key = var.ssh_public_key
+    public_key = file(pathexpand("~/.ssh/id_rsa.pub"))
   }
 }
 
@@ -146,3 +141,5 @@ output "vm_ip" {
 output "public_ip_address" {
   value = azurerm_public_ip.maydoy-pip.ip_address
 }
+
+# create 
