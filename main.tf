@@ -17,7 +17,7 @@ terraform {
  backend "azurerm" {
   resource_group_name  = "maydoy-rg"
   storage_account_name = "maydoytfstate"
-  password             = "maydoytfstate.key"
+  access_key             = "maydoytfstate.key"
 }
 }
 
