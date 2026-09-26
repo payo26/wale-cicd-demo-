@@ -9,8 +9,8 @@ terraform {
   }
 
   backend "azurerm" {
-    resource_group_name  = "maydoy-rg"
-    storage_account_name = "maydoytfstate"
+    resource_group_name  = "terraform-rg"
+    storage_account_name = "wale2026"
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
   }
