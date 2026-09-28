@@ -53,6 +53,7 @@ jobs:
         run: |
           if ! terraform state show azurerm_resource_group.maydoy-rg >/dev/null 2>&1; then
             terraform import \
+            -var="subscription_id=${{ secrets.WALE_SUBSCRIPTION_ID }}" \
               azurerm_resource_group.maydoy-rg \
               "/subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/maydoy-rg"
           else
