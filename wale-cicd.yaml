@@ -34,8 +34,13 @@ jobs:
           chmod 600 ~/.ssh/id_rsa.pub
 
       - name: Terraform Init
-        run: terraform init
-
+        run: terraform init -backend-config="resource_group_name=${{ secrets.TF_RESOURCE_GROUP }}" -backend-config="storage_account_name=${{ secrets.TF_STORAGE_ACCOUNT }}" -backend-config="container_name=${{ secrets.TF_CONTAINER_NAME }}"
+        env:
+        ARM_USE_OIDC: true
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.WALE_SUBSCRIPTION_ID }}
+        
       - name: Terraform Plan
         run: terraform plan -var="subscription_id=${{ secrets.WALE_SUBSCRIPTION_ID }}" -out="maydoy.tfplan"
 
