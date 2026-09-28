@@ -24,6 +24,13 @@ jobs:
           subscription-id: ${{ secrets.WALE_SUBSCRIPTION_ID }} 
         
       - uses: actions/checkout@v2
+
+      - name: Verify source and backend
+  run: |
+    git rev-parse HEAD
+    git log -1 --oneline
+    grep -RIn --include='*.tf' 'password' . || true
+    grep -RIn --include='*.tf' 'backend' .
       
       - uses: hashicorp/setup-terraform@v3
 
