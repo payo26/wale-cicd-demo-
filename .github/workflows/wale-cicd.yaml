@@ -44,6 +44,21 @@ jobs:
           rm -rf .terraform .terraform.lock.hcl
           terraform init -reconfigure
 
+      - name: Import Existing Resource Group
+        env:
+          ARM_USE_OIDC: true
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.WALE_SUBSCRIPTION_ID }}
+        run: |
+          if ! terraform state show azurerm_resource_group.maydoy-rg >/dev/null 2>&1; then
+            terraform import \
+              azurerm_resource_group.maydoy-rg \
+              "/subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/maydoy-rg"
+          else
+            echo "Resource group is already managed by Terraform."
+          fi
+
       - name: Terraform Plan
         env:
           ARM_USE_OIDC: true
